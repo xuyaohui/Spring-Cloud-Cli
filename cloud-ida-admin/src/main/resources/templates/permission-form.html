@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+	<base href="/">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <style>
+          .layui-form-item .layui-input-inline {
+              width: 300px;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="x-body">
+        <form class="layui-form" id="permissionForm">
+            <input type="hidden" name="permissionId" id="permissionId">
+            <input type="hidden" name="permissionLv" id="permissionLv">
+            <div class="layui-form-item">
+                <label for="permissionName" class="layui-form-label">
+                    <span class="x-red">*</span>权限名称
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="permissionName" name="permissionName" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="parentpermissionId" class="layui-form-label">
+                    <span class="x-red">*</span>父权限(若无父权限则为一级权限)
+                </label>
+                <div class="layui-input-block">
+                    <select name="parentpermissionId" lay-filter="select" id="parentpermissionId" lay-verify="">
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" id="urlDiv" hidden>
+                <label for="permissionUrl" class="layui-form-label">
+                    <span class="x-red">*</span>权限url
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="permissionUrl" name="permissionUrl" required=""
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <!--新增url所需权限（英文表示）-->
+            <div class="layui-form-item" id="authDiv" hidden>
+                <label for="permissionAuth" class="layui-form-label">
+                    <span class="x-red">*</span>所需权限
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="permissionAuth" name="permissionAuth" required=""
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+          <div class="layui-form-item">
+              <label for="" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">
+                  增加
+              </button>
+          </div>
+      </form>
+    </div>
+    <script>
+        $(function(){
+
+            //信息回显
+            var id=getQueryParam("id");
+            var parentpermissionId=0;
+            if(typeof(id)!="undefined"&&id!=""){
+                //初始化页面数据
+                $.ajax({
+                    url:'permission/'+id,
+                    async:false,
+                    success:function (res) {
+                        if(res.code==200){
+                            $("#permissionId").val(res.data.permission.permissionId);
+                            $("#permissionName").val(res.data.permission.permissionName);
+                            $("#permissionUrl").val(res.data.permission.permissionUrl);
+                            //加载所需权限
+                            $("#permissionAuth").val(res.data.permission.permissionAuth);
+                            parentpermissionId=res.data.permission.parentpermissionId;
+                        }else{
+                            layer.msg(res.msg,{icon:5,time:1000});
+                        }
+                    },
+                    error:function () {
+                        layer.msg("加载数据失败",{icon:5,time:1000});
+                    }
+                });
+            }
+
+            //加载一级权限
+            $.ajax({
+                url:'listPermission',
+                data:{permissionLv:1},
+                success:function (res) {
+                    if(res.code==200){
+                        $("#parentpermissionId").empty();
+                        $("#parentpermissionId").append($("<option></option>").append("无").attr("value","0"));
+                        $.each(res.data.list,function (index,item) {
+                            var opt=$("<option></option>").append(item.permissionName).attr("value",item.permissionId);
+                            if(parentpermissionId==item.permissionId){
+                                opt.attr("selected","selected");
+                                $("#urlDiv").show();
+                                $("#authDiv").show();
+                            }
+                            $("#parentpermissionId").append(opt);
+                        });
+                        //form = layui.form;
+                        layui.form.render('select'); //刷新select选择框渲染
+                    }
+                }
+            });
+
+        });
+
+        layui.use(['form','layer'], function(){
+            form = layui.form,layer = layui.layer;
+
+
+            //监听提交
+            form.on('submit(add)', function(data){
+                var lv=$("#parentpermissionId").val();
+                if(lv=="0"){//一级
+                    $("#permissionLv").val("1");
+                }else{
+                    $("#permissionLv").val("2");
+                }
+
+                $.ajax({
+                    url:'permission',
+                    type:'post',
+                    data:$("#permissionForm").serialize(),
+                    success:function (res) {
+                        if(res.code==200){
+                            layer.alert("添加成功", {icon: 6},function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //刷新父页面 去最后一页
+                                parent.initPermissionList(parent.$("#pages").val());
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
+                        }else{
+                            layer.alert(res.msg, {icon: 5,time:1000});
+                        }
+                    },
+                    error:function (res) {
+                        layer.msg("操作失败",{icon:5,time:1000});
+                    }
+                });
+                return false;
+            });
+
+
+            form.on('select(select)', function(data){
+                console.log(data.value); //得到被选中的值
+                if(data.value=="0"){
+                    $("#urlDiv").hide();
+//                    $("#permissionUrl").val("");
+                    //新增权限url对应英文权限
+                    $("#authDiv").hide();
+//                    $("#permissionAuth").val("");
+
+                }else{
+                    $("#urlDiv").show();
+                    $("#authDiv").show();
+                }
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 9084
+spring:
+  application:
+    name: cloud-zuul
+  zipkin:
+    base-url: http://localhost:9411
+#  sleuth:
+#    sampler:
+#      percentage: 1
+  redis:
+      database: 0
+      host: localhost
+      port: 6379
+      timeout: 0
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+zuul:
+  routes:
+    api-a:
+      path: /api-tag/**
+      serviceId: tag-client
+      sensitive-headers:
+      custom-sensitive-headers: true
+    api-b:
+      path: /api-b/**
+      serviceId: cloud-service1
+    resource-admin:
+      path: /admin/**
+      serviceId: cloud-ida-admin
+
+###TD数据库配置
+#datasource:
+#  master:
+#    url: jdbc:teradata://192.168.32.128/CLIENT_CHARSET=EUC_CN,TMODE=TERA,CHARSET=ASCII,LOB_SUPPORT=off,database=PV_TAGCFG
+#    driverClassName: com.teradata.jdbc.TeraDriver
+#    username: dbc
+#    password: dbc
+
+##Mysql数据库配置
+datasource:
+  master:
+    url: jdbc:postgresql://localhost:5432/cloud-ida
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: 123456

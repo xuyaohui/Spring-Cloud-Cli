@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teradata.dao.RolePermissionMapper">
+  <resultMap id="BaseResultMap" type="com.teradata.bean.po.RolePermission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, role_id, permission_id
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ida_role_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ida_role_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+    delete from ida_role_permission
+    WHERE role_id= #{roleId,jdbcType=INTEGER}
+  </delete>
+
+
+
+  <insert id="insertSelective" parameterType="com.teradata.bean.po.RolePermission">
+    insert into ida_role_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="permissionId != null">
+        permission_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null">
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.teradata.bean.po.RolePermission">
+    update ida_role_permission
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null">
+        permission_id = #{permissionId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="rolepermissionMap" type="com.teradata.bean.vo.RolePermissionVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <association property="permission" javaType="com.teradata.bean.po.Permission">
+      <id column="permission_id" jdbcType="INTEGER" property="permissionId" />
+      <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+      <result column="permission_url" jdbcType="VARCHAR" property="permissionUrl" />
+    </association>
+  </resultMap>
+
+  <!--根据role_Id获取角色的权限详情-->
+  <select id="listRolepermissions" parameterType="java.lang.Integer" resultMap="rolepermissionMap">
+      SELECT   r.id, r.role_id, p.permission_id, p.permission_name, p.permission_url
+      FROM ida_role_permission r,ida_permission p
+      WHERE r.permission_id=p.permission_id and r.role_id= #{roleId,jdbcType=INTEGER}
+  </select>
+
+  <!--根据roleId获取permissionIds-->
+  <select id="listRolepermission" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"></include>
+    FROM ida_role_permission
+    WHERE role_id= #{roleId,jdbcType=INTEGER}
+  </select>
+
+  <!--批量新增-->
+  <insert id="batchInsert" parameterType="java.util.List">
+      INSERT INTO ida_role_permission(role_id,permission_id) VALUES
+       <trim suffixOverrides=",">
+        <foreach item="item" index="index" collection="list">
+          (#{item.roleId},#{item.permissionId}),
+        </foreach>
+       </trim>
+
+  </insert>
+
+</mapper>

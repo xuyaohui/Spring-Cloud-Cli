@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teradata.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.teradata.bean.po.User">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_role_names" jdbcType="VARCHAR" property="userRoleNames" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    user_id, user_name,user_role_names,user_account,user_password
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ida_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ida_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="userId" parameterType="com.teradata.bean.po.User">
+    insert into ida_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userAccount != null">
+        user_account,
+      </if>
+      <if test="userPassword != null">
+        user_password,
+      </if>
+      <if test="userRoleNames != null and userRoleNames !=''">
+        user_role_names,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null">
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userRoleNames != null and userRoleNames!=''">
+        #{userRoleNames,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.teradata.bean.po.User">
+    update ida_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null">
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userRoleNames != null">
+        user_role_names = #{userRoleNames,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="listUser" parameterType="com.teradata.bean.po.User" resultMap="BaseResultMap">
+      SELECT
+      <include refid="Base_Column_List"></include>
+      FROM ida_user
+      <where>
+        <if test="userName != null and userName !=''">
+           AND  user_name like  '%${userName}%'
+        </if>
+        <if test="userAccount != null and userAccount !=''">
+           AND  user_account =  #{userAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="userPassword != null and userPassword !=''">
+           AND  user_password =  #{userPassword,jdbcType=VARCHAR}
+        </if>
+      </where>
+  </select>
+</mapper>

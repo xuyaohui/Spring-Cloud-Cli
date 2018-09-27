@@ -1,0 +1,24 @@
+spring:
+  rabbitmq:
+      host: localhost
+      port: 5672
+      username: guest
+      password: guest
+      ##开启发送确认
+      publisher-confirms: true
+      ##开发发送失败返回
+      publisher-returns: true
+      listener:
+        direct:
+          acknowledge-mode: manual
+        simple:
+          acknowledge-mode: manual
+
+hystrix:
+  command:
+      default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 5000
+

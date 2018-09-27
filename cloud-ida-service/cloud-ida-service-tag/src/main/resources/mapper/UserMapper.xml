@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teradata.tag.repository.UserRepository">
+
+    <resultMap id="sysUser-result" type="com.teradata.tag.bean.User">
+        <result property="userId" column="user_id" />
+        <result property="userName" column="user_Name" />
+        <result property="userRoleNames" column="user_role_names" />
+        <result property="userAccount" column="user_account" />
+        <result property="userPassword" column="user_password" />
+    </resultMap>
+
+    <select id="getUserByUserId" resultMap="sysUser-result" parameterType="java.lang.String">
+        SELECT user_id, user_name, user_role_names, user_account, user_password
+	    FROM public.ida_user
+	    WHERE user_account=#{userId,jdbcType=VARCHAR}
+
+    </select>
+
+
+</mapper>

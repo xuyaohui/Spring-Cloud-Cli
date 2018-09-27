@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teradata.zuul.repository.UserDao">
+
+
+    <resultMap id="sysUser-result" type="com.teradata.zuul.bean.User">
+        <result property="userAccount" column="USER_ACCOUNT" />
+        <result property="password" column="USER_PASSWORD" />
+        <result property="roles" column="USER_ROLE_NAMES" />
+    </resultMap>
+
+    <resultMap id="permission-result" type="com.teradata.zuul.bean.UserPermission">
+        <result property="userId" column="userId" />
+        <result property="permission" column="permission" />
+
+    </resultMap>
+
+    <resultMap id="permissionRole-result" type="com.teradata.zuul.bean.PermissionRole">
+        <result property="permissionUrl" column="permissionUrl" />
+        <result property="roleName" column="roleName" />
+
+    </resultMap>
+
+    <select id="getMenuListByName" resultType="String">
+        SELECT a.permission_auth
+        FROM ida_permission a
+        left join ida_role_permission b
+        on a.permission_id=b.permission_id
+        left join ida_user_role c
+        on b.role_id = c.role_id
+        left join ida_user d
+        on c.user_id=d.user_id
+        where a.parent_permission_id =20  and d.user_account = #{userAccount}
+
+    </select>
+
+    <select id="getUserByName" resultMap="sysUser-result">
+
+
+        SELECT user_account,user_password,user_role_names
+        FROM ida_USER
+        WHERE user_account = #{userAccount}
+
+    </select>
+
+    <select id="getUserPermissions" resultType="String">
+        SELECT d.permission_auth as permission
+        FROM ida_user a
+        LEFT JOIN ida_user_role b
+        on a.user_id= b.user_id
+        LEFT JOIN ida_role_permission c
+        on b.role_id = c.role_id
+        LEFT JOIN ida_permission d
+        on c.permission_id = d.permission_id
+        WHERE a.user_account = #{userAccount} and d.permission_auth is not null
+    </select>
+
+    <select id="getAllRolesByPermission" resultMap="permissionRole-result">
+        SELECT a.permission_url as permissionUrl,CONCAT(CONCAT('roles[',string_agg(c.role_name,',')),']') as roleName
+        from ida_permission a
+        left join ida_role_permission b
+        on a.permission_id = b.permission_id
+        left join ida_role c
+        on b.role_id = c.role_id
+        WHERE a.permission_url is not NULL and a.permission_url != ''
+        GROUP BY a.permission_url
+    </select>
+
+</mapper>

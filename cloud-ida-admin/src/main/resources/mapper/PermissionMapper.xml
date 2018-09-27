@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teradata.dao.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.teradata.bean.po.Permission">
+    <id column="permission_id" jdbcType="INTEGER" property="permissionId" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <result column="permission_url" jdbcType="VARCHAR" property="permissionUrl" />
+    <result column="parent_permission_id" jdbcType="INTEGER" property="parentpermissionId" />
+    <result column="parent_permission_name" jdbcType="VARCHAR" property="parentpermissionName" />
+    <result column="permission_lv" jdbcType="INTEGER" property="permissionLv" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    permission_id, permission_name, permission_url,permission_auth ,parent_permission_id, permission_lv
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ida_permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ida_permission
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.teradata.bean.po.Permission">
+    insert into ida_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="permissionId != null">
+        permission_id,
+      </if>
+      <if test="permissionName != null">
+        permission_name,
+      </if>
+      <if test="permissionUrl != null">
+        permission_url,
+      </if>
+      <if test="permissionAuth != null">
+        permission_auth,
+      </if>
+
+      <if test="parentpermissionId != null">
+        parent_permission_id,
+      </if>
+      <if test="permissionLv != null">
+        permission_lv,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="permissionId != null">
+        #{permissionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionName != null">
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null">
+        #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionAuth != null">
+        #{permissionAuth,jdbcType=VARCHAR},
+      </if>
+      <if test="parentpermissionId != null">
+        #{parentpermissionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionLv != null">
+        #{permissionLv,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.teradata.bean.po.Permission">
+    update ida_permission
+    <set>
+      <if test="permissionName != null">
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null">
+        permission_url = #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionAuth != null">
+        permission_auth = #{permissionAuth,jdbcType=VARCHAR},
+      </if>
+      <if test="parentpermissionId != null">
+        parent_permission_id = #{parentpermissionId,jdbcType=INTEGER},
+      </if>
+      <if test="permissionLv != null">
+        permission_lv = #{permissionLv,jdbcType=INTEGER},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=INTEGER}
+  </update>
+
+  <select id="listPermissionWithParName"  parameterType="com.teradata.bean.po.Permission" resultMap="BaseResultMap">
+      SELECT  p1.permission_id, p1.permission_name, p1.permission_url, p1.parent_permission_id,p2.permission_name parent_permission_name, p1.permission_lv
+      FROM  ida_permission p1
+      LEFT JOIN  ida_permission p2 on p1.parent_permission_id= p2.permission_id
+      <where>
+        <if test="permissionName != null and permissionName !=''">
+          AND  p1.permission_name like '%${permissionName}%'
+        </if>
+      </where>
+  </select>
+
+  <select id="listPermission"  parameterType="com.teradata.bean.po.Permission" resultMap="BaseResultMap">
+      SELECT  p1.permission_id, p1.permission_name, p1.permission_url, p1.parent_permission_id, p1.permission_lv
+      FROM  ida_permission p1
+      <where>
+        <if test="permissionLv != null and permissionLv !=0">
+          AND  p1.permission_lv = #{permissionLv,jdbcType=INTEGER}
+        </if>
+      </where>
+  </select>
+
+  <resultMap id="PermissionViewMap" type="com.teradata.bean.vo.PermissionView">
+    <id column="par_permission_id" jdbcType="INTEGER" property="permissionId" />
+    <result column="par_permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <collection property="childpermissions" ofType="com.teradata.bean.po.Permission">
+      <id column="child_permission_id" jdbcType="INTEGER" property="permissionId" />
+      <result column="child_permission_name" jdbcType="VARCHAR" property="permissionName" />
+      <result column="child_permission_url" jdbcType="VARCHAR" property="permissionUrl" />
+    </collection>
+
+  </resultMap>
+
+  <select id="listPermissionView" resultMap="PermissionViewMap">
+       SELECT  p1.permission_id par_permission_id, p1.permission_name par_permission_name,p2.permission_id child_permission_id, p2.permission_name child_permission_name,p2.permission_url child_permission_url
+       FROM  ida_permission p1
+       LEFT JOIN ida_permission p2 ON  p1.permission_id=p2.parent_permission_id
+       WHERE p1.permission_lv=1
+  </select>
+
+
+  <select id="getUserpermissions" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+	p2.permission_id,
+	p2.permission_name,
+	p2.permission_url
+    FROM
+        ida_role_permission p,
+        ida_permission p2
+    WHERE
+        p.permission_id = p2.permission_id
+    AND p.role_id IN (
+        SELECT
+            r.role_id
+        FROM
+            ida_user_role r
+        WHERE
+            r.user_id = #{userId,jdbcType=INTEGER}
+    )
+  </select>
+
+</mapper>

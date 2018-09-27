@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+	<base href="/">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+
+<style>
+          .layui-form-item .layui-input-inline {
+              width: 300px;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="x-body">
+        <form class="layui-form" id="userForm">
+            <input type="hidden" name="userId" id="userId">
+            <div class="layui-form-item">
+                <label for="userName" class="layui-form-label">
+                    <span class="x-red">*</span>姓名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="userName" name="userName" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="userRoles" class="layui-form-label">
+                    <span class="x-red">*</span>角色
+                </label>
+                <input type="hidden" name="userRoles" id="userRoles"/>
+                <div class="layui-input-inline">
+                    <input type="text" id="userRoleNames" name="userRoleNames" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <button class="layui-btn layui-btn-sm layui-btn-normal" id="chooseRole">选择角色</button>
+            </div>
+
+          <div class="layui-form-item">
+              <label for="" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">
+                  增加
+              </button>
+          </div>
+      </form>
+    </div>
+    <script>
+        $(function(){
+
+            layui.use(['form','layer'], function(){
+                form = layui.form,layer = layui.layer;
+                var id=getQueryParam("id");
+                if(typeof(id)!="undefined"&&id!=""){
+                    //初始化页面数据
+                    //根据用户id查询基本信息
+                    $.ajax({
+                        url:'user/'+id,
+                        async:false,
+                        success:function (res) {
+                            if(res.code==200){
+                                $("#userId").val(res.data.user.userId);
+                                $("#userName").val(res.data.user.userName);
+                                $("#userRoleNames").val(res.data.user.userRoleNames);
+
+                            }else{
+                                layer.msg(res.msg,{icon:5,time:1000});
+                            }
+                        },
+                        error:function () {
+                            layer.msg("加载数据失败",{icon:5,time:1000});
+                        }
+                    });
+                    //根据用户id查询角色信息
+                    $.ajax({
+                        url:'listUserRoles',
+                        data:{userId:id},
+                        type:'post',
+                        success:function (res) {
+                            if(res.code==200){
+                                $("#userRoles").val(res.data.roleIds);
+                            }
+                        }
+                    });
+                }
+
+                //监听提交
+                form.on('submit(add)', function(data){
+                    $.ajax({
+                        url:'user',
+                        type:'post',
+                        data:$("#userForm").serialize(),
+                        success:function (res) {
+                            if(res.code==200){
+                                layer.alert("添加成功", {icon: 6},function () {
+                                    // 获得frame索引
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    //刷新父页面 去最后一页
+                                    parent.initUserList(parent.$("#pages").val());
+                                    //关闭当前frame
+                                    parent.layer.close(index);
+                                });
+                            }else{
+                                layer.alert(res.msg, {icon: 5,time:1000});
+                            }
+                        },
+                        error:function (res) {
+                            layer.msg("操作失败",{icon:5,time:1000});
+                        }
+                    });
+                    return false;
+                });
+
+                $("#chooseRole").click(function () {
+                    x_admin_show("选择角色","page/role-select","400","400");
+                    return false;
+                });
+            });
+        });
+    </script>
+  </body>
+</html>

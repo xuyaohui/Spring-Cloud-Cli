@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.teradata</groupId>
+	<artifactId>cloud-ida-service-tag</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>cloud-ida-service-tag</name>
+	<description>测试服务tag</description>
+
+	<parent>
+		<artifactId>cloud-ida-service</artifactId>
+		<groupId>com.teradata</groupId>
+		<version>1.0.0</version>
+	</parent>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.teradata</groupId>
+			<artifactId>common</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

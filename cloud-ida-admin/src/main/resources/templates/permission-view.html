@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+	<base href="/">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <style>
+          .layui-form-item .layui-input-inline {
+              width: 300px;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="x-body">
+        <form class="layui-form" id="permissionViewForm">
+
+
+        </form>
+    </div>
+    <script>
+        $(function(){});
+
+            layui.use(['form','layer'], function(){
+                form = layui.form,layer = layui.layer;
+
+                /*
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户管理</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="like[write]" title="新增修改">
+                        <input type="checkbox" name="like[read]" title="列表查询" checked>
+                        <input type="checkbox" name="like[dai]" title="删除">
+                    </div>
+                </div>
+
+                 */
+
+
+                //初始化元素
+                $.ajax({
+                   url:'permission-view',
+                   type:'GET',
+                   success:function (res) {
+                       if(res.code==200){
+                            $("#permissionViewForm").empty();
+                            $.each(res.data.list,function (index,item) {
+                                var div=$("<div></div>").addClass("layui-form-item");
+                                var label=$("<label></label>").addClass("layui-form-label").append(item.permissionName);
+                                var div2=$("<div></div>").addClass("layui-input-block");
+                                $.each(item.childpermissions,function (index2,item2) {
+                                    var input=$("<input/>").attr("type","checkbox").attr("name","permissionIds").attr("title",item2.permissionName).attr("value",item2.permissionId);
+                                    div2.append(input);
+                                });
+                                div.append(label).append(div2).appendTo($("#permissionViewForm"));
+                            });
+                            //数据填充完成，重新渲染表单
+                           form.render();
+                       }
+                   }
+                });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+	<base href="/">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <style>
+          .layui-form-item .layui-input-inline {
+              width: 300px;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="x-body">
+        <form class="layui-form" id="roleForm">
+            <input type="hidden" name="roleId" id="roleId">
+            <div class="layui-form-item">
+                <label  class="layui-form-label">
+                    <span class="x-red">*</span>所有角色
+                </label>
+                <div class="layui-input-block" id="roleDiv">
+                </div>
+            </div>
+
+          <div class="layui-form-item">
+              <label class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">
+                  确定
+              </button>
+          </div>
+      </form>
+    </div>
+    <script>
+        $(function(){
+
+            var userRoleIds=new Array();
+
+            //加载角色列表
+            $.ajax({
+                url:'role',
+                data:{notAllowPage:1},
+                success:function (res) {
+                    if(res.code==200){
+                        $("#roleDiv").empty();
+                        var userRoles=parent.$("#userRoles").val();
+                        var ids=userRoles.split(",");
+                        $.each(ids,function(index,item){
+                            userRoleIds[index]=parseInt(item);
+                        });
+                        $.each(res.data.list,function (index,item) {
+                           var checkbox=$("<input/>").attr("type","checkbox").attr("name","role").attr("title",item.roleName).attr("value",item.roleId);
+                           if(userRoleIds.indexOf(parseInt(item.roleId))>=0){
+                               checkbox.attr("checked","checked");
+                           }
+                           $("#roleDiv").append(checkbox);
+                        });
+                    }
+                    form.render('checkbox'); //更新checkbox
+                }
+            });
+
+            layui.use(['form','layer'], function(){
+                form = layui.form,layer = layui.layer;
+                //监听提交
+                form.on('submit(add)', function(data){
+                    var ids='';
+                    var names='';
+                    var array=$("input[name='role']:checked");
+                    $.each(array,function () {
+                        ids+=$(this).val()+",";
+                        names+=$(this).attr("title")+",";
+                    });
+                    ids=ids.substring(0,ids.length-1);
+                    names=names.substring(0,names.length-1);
+                    parent.$("#userRoles").val(ids);
+                    parent.$("#userRoleNames").val(names);
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                    return false;
+                });
+            });
+
+        });
+    </script>
+  </body>
+
+</html>

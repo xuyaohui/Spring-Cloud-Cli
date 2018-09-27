@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+	<base href="/">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <style>
+          .layui-form-item .layui-input-inline {
+              width: 300px;
+          }
+      </style>
+  </head>
+  <body>
+    <div class="x-body">
+        <form class="layui-form" id="roleForm">
+            <input type="hidden" name="roleId" id="roleId">
+            <div class="layui-form-item">
+                <label for="roleName" class="layui-form-label">
+                    <span class="x-red">*</span>角色名称
+                </label>
+                <div class="layui-input-block">
+                    <input type="text" id="roleName" name="roleName" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+          <div class="layui-form-item">
+              <label for="" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">
+                  增加
+              </button>
+          </div>
+      </form>
+    </div>
+    <script>
+        $(function(){
+            var id=getQueryParam("id");
+            if(typeof(id)!="undefined"&&id!=""){
+                //初始化页面数据
+                $.ajax({
+                    url:'role/'+id,
+                    async:false,
+                    success:function (res) {
+                        if(res.code==200){
+                            $("#roleId").val(res.data.role.roleId);
+                            $("#roleName").val(res.data.role.roleName);
+                        }else{
+                            layer.msg(res.msg,{icon:5,time:1000});
+                        }
+                    },
+                    error:function () {
+                        layer.msg("加载数据失败",{icon:5,time:1000});
+                    }
+
+                });
+            }
+        });
+
+        layui.use(['form','layer'], function(){
+            form = layui.form,layer = layui.layer;
+            //监听提交
+            form.on('submit(add)', function(data){
+                $.ajax({
+                    url:'role',
+                    type:'post',
+                    data:$("#roleForm").serialize(),
+                    success:function (res) {
+                        if(res.code==200){
+                            layer.alert("添加成功", {icon: 6},function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //刷新父页面 去最后一页
+                                parent.initRoleList(parent.$("#pages").val());
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
+                        }else{
+                            layer.alert(res.msg, {icon: 5,time:1000});
+                        }
+                    },
+                    error:function (res) {
+                        layer.msg("操作失败",{icon:5,time:1000});
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
+  </body>
+
+</html>

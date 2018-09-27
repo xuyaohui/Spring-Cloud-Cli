@@ -1,0 +1,54 @@
+##ignore this file##
+target/ 
+.classpath
+.project
+.settings      
+.springBeans
+.tern-project
+.metadata/
+.externalToolBuilders/
+Servers/
+ ##filter databfile��sln file##
+*.mdb  
+*.ldb  
+*.sln    
+##class file##
+*.com  
+*.class  
+*.dll  
+#*.exe  
+*.o  
+*.so  
+# compression file
+*.7z  
+*.dmg  
+*.gz  
+*.iso  
+#*.jar  
+*.rar  
+*.tar  
+#*.zip  
+*.via
+*.tmp
+*.err 
+# OS generated files #  
+.DS_Store  
+.DS_Store?  
+._*  
+.Spotlight-V100  
+.Trashes  
+#Icon?  
+ehthumbs.db  
+Thumbs.db
+common/.externalToolBuilders/org.eclipse.wst.common.project.facet.core.builder.launch
+common/.externalToolBuilders/org.eclipse.wst.validation.validationbuilder.launch
+.idea/
+.iml
+*.iml
+cloud-ida-shiro/mvnw
+cloud-ida-shiro/mvnw.cmd
+cloud-ida-shiro/.mvn/wrapper/maven-wrapper.jar
+cloud-ida-shiro/.mvn/
+cloud-ida-admin/.mvn/
+cloud-ida-admin/mvnw
+cloud-ida-admin/mvnw.cmd
