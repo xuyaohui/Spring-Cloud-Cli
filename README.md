@@ -2,7 +2,7 @@ SpringCloud 脚手架
 ===
 项目架构图
 ---
-![image](https://consulting-github.teradata.com/Yaohui-Xu/CLOUD-IDA/blob/master/images/%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
 
 所使用相关技术：
 ---
@@ -77,11 +77,14 @@ cloud-ida-zuul : 9084
 *   配置各模块设置数据库的url、用户名和密码，可通过全局搜索"jdbc:postgresql",替换成自己的配置
 *   启动顺序：cloud-ida-eureka->cloud-ida-config->cloud-ida-admin server->cloud-ida-admin->cloud-ida-service->cloud-ida-zuul->cloud-ida-zipkin
 *   各模块使用springboot创建，找到个服务对用的application,运行main函数即可，如cloud-ida-zuul的application为CloudDockerZuulApplication
+*   启动vue前端，切换到vue-front目录下，运行cnpm run dev(事先安装node.js、cnpm、vue)
+
 
 系统体验
 ---
 
 后台管理系统：http://localhost:9000/index 用户名/密码：admin/123456
+前端系统： http://localhost:9521 用户名/密码：admin/123456
 
 
 
