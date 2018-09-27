@@ -83,8 +83,8 @@ cloud-ida-zuul : 9084
 系统体验
 ---
 
-后台管理系统：http://localhost:9000/index 用户名/密码：admin/123456
-前端系统： http://localhost:9521 用户名/密码：admin/123456
+*   后台管理系统：http://localhost:9000/index 用户名/密码：admin/123456
+*   前端系统： http://localhost:9521 用户名/密码：admin/123456
 
 
 
