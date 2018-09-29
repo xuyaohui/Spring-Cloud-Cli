@@ -95,24 +95,23 @@ cloud-ida-zuul : 9084
 ---
 
 后台管理系统截图
-
-![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/admin.png)
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/admin.PNG)
 
 后端赋权
 
-![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/auth.png)
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/auth.PNG)
 
 服务监控
 
-![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/watch.png)
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/watch.PNG)
 
 vue登录界面
 
-![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/login.png)
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/login.PNG)
 
 vue前端测试界面
 
-![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/vue.png)
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/vue.PNG)
 
 
 
