@@ -1,5 +1,10 @@
 SpringCloud 脚手架
 ===
+
+简易教程
+---
+https://blog.csdn.net/u014271612/article/details/82866913
+
 项目架构图
 ---
 ![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/%E6%9E%B6%E6%9E%84%E5%9B%BE.png)
@@ -85,6 +90,31 @@ cloud-ida-zuul : 9084
 
 *   后台管理系统：http://localhost:9000/index 用户名/密码：admin/123456
 *   前端系统： http://localhost:9521 用户名/密码：admin/123456
+
+系统截图
+---
+
+后台管理系统截图
+
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/admin.png)
+
+后端赋权
+
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/auth.png)
+
+服务监控
+
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/watch.png)
+
+vue登录界面
+
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/login.png)
+
+vue前端测试界面
+
+![image](https://github.com/xuyaohui/cloud-ida-cli/blob/master/images/vue.png)
+
+
 
 
 
