@@ -1,65 +1,65 @@
 ﻿
---权限表
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+##权限表
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('用户管理', null, '0', '1','');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('新增修改', '/user-post', '1', '2','upost');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('列表查询', '/user-get', '1', '2','uget');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('删除用户', '/user/{id}-delete', '1', '2','udelete');
 
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('角色管理', null, '0', '1','');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('新增修改', '/role-post', '5', '2','rpost');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('列表查询', '/role-get', '5', '2','rget');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('删除角色', '/role/{id}-delete', '5', '2','rdelete');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('角色授权', '/role-authorization-post', '5', '2','rauth');
 
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('权限管理', null, '0', '1','');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('新增修改', '/permission-post', '10', '2','ppost');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('列表查询', '/permission-get', '10', '2','pget');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('删除权限', '/permission/{id}-delete', '10', '2','pdelete');
-INSERT INTO public.ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('预览权限', '/permission-view-get', '10', '2','pview');
 
 
---角色表
-INSERT INTO public.ida_role(role_name) VALUES ('用户管理员');
-INSERT INTO public.ida_role(role_name) VALUES ('角色管理员');
-INSERT INTO public.ida_role(role_name) VALUES ('权限管理员');
-INSERT INTO public.ida_role(role_name) VALUES ('超级管理员');
+##角色表
+INSERT INTO  ida_role(role_name) VALUES ('用户管理员');
+INSERT INTO  ida_role(role_name) VALUES ('角色管理员');
+INSERT INTO  ida_role(role_name) VALUES ('权限管理员');
+INSERT INTO  ida_role(role_name) VALUES ('超级管理员');
 
---用户表
-INSERT INTO public.ida_user(user_name, user_role_names, user_account, user_password) VALUES ('许耀辉', '超级管理员','admin', '123456');
-INSERT INTO public.ida_user(user_name, user_role_names, user_account, user_password) VALUES ('用户管理员', '用户管理员', 'user', '123456');
+##用户表
+INSERT INTO  ida_user(user_name, user_role_names, user_account, user_password) VALUES ('许耀辉', '超级管理员','admin', '123456');
+INSERT INTO  ida_user(user_name, user_role_names, user_account, user_password) VALUES ('用户管理员', '用户管理员', 'user', '123456');
 
---用户角色表
-INSERT INTO public.ida_user_role(user_id, role_id) VALUES (1,4);
-INSERT INTO public.ida_user_role(user_id, role_id) VALUES (2,1);
+##用户角色表
+INSERT INTO  ida_user_role(user_id, role_id) VALUES (1,4);
+INSERT INTO  ida_user_role(user_id, role_id) VALUES (2,1);
 
---角色权限表
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,2);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,3);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,4);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,6);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,7);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,8);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,9);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,11);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,12);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,13);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (4,14);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (1,1);
-INSERT INTO public.ida_role_permission(role_id, permission_id) VALUES (1,2);
+##角色权限表
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,2);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,3);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,4);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,6);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,7);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,8);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,9);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,11);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,12);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,13);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (4,14);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (1,1);
+INSERT INTO  ida_role_permission(role_id, permission_id) VALUES (1,2);
 
 
 
