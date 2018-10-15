@@ -31,6 +31,24 @@ INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_i
 INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
 	VALUES ('预览权限', '/permission-view-get', '10', '2','pview');
 
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+    VALUES (''菜单'', null, '0', '1','');
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+	VALUES ('标签取数','/tag-index','20','2','tindex');
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+	VALUES ('模板取数','/tag-fetch-data','20','2','tftemplet');
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+	VALUES ('客户群','/tag-cluster','20','2','tcluster');
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+	VALUES ('常规标签配置','/tag-simple','20','2','tsconfig');
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+	VALUES ('标签工厂','/tag-factory','20','2','tfconfig');
+
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+	VALUES ('tag服务权限控制',null,'0','1','');
+INSERT INTO  ida_permission(permission_name, permission_url, parent_permission_id, permission_lv, permission_auth)
+	VALUES ('通过id获取用户信息','/api-tag/tag/getUserById','26','2','tag:get');
+
 
 ##角色表
 INSERT INTO  ida_role(role_name) VALUES ('用户管理员');
