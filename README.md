@@ -79,10 +79,10 @@ cloud-ida-zuul : 9084
 
 *   保证各服务模块使用的端口未被占用
 *   根据表模型创建库（如cloud-ida）、表，并插入相应的测试数据
-*   配置各模块设置数据库的url、用户名和密码，可通过全局搜索"jdbc:postgresql",替换成自己的配置
+*   配置各模块设置数据库的url、用户名和密码(Mysql)
 *   启动顺序：cloud-ida-eureka->cloud-ida-config->cloud-ida-admin server->cloud-ida-admin->cloud-ida-service->cloud-ida-zuul->cloud-ida-zipkin
 *   各模块使用springboot创建，找到个服务对用的application,运行main函数即可，如cloud-ida-zuul的application为CloudDockerZuulApplication
-*   启动vue前端，切换到vue-front目录下，运行cnpm run dev(事先安装node.js、cnpm、vue)
+*   启动vue前端，切换到vue-front目录下，运行npm run dev(事先安装node.js、cnpm、vue)
 
 
 系统体验
