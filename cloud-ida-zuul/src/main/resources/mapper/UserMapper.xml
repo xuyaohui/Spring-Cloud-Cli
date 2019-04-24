@@ -30,7 +30,7 @@
         on b.role_id = c.role_id
         left join ida_user d
         on c.user_id=d.user_id
-        where a.parent_permission_id =20  and d.user_account = #{userAccount}
+        where a.parent_permission_id =15  and d.user_account = #{userAccount}
 
     </select>
 
@@ -56,7 +56,7 @@
     </select>
 
     <select id="getAllRolesByPermission" resultMap="permissionRole-result">
-        SELECT a.permission_url as permissionUrl,CONCAT(CONCAT('roles[',string_agg(c.role_name,',')),']') as roleName
+        SELECT a.permission_url as permissionUrl,CONCAT(CONCAT('roles[',group_concat(c.role_name,',')),']') as roleName
         from ida_permission a
         left join ida_role_permission b
         on a.permission_id = b.permission_id
@@ -64,6 +64,7 @@
         on b.role_id = c.role_id
         WHERE a.permission_url is not NULL and a.permission_url != ''
         GROUP BY a.permission_url
+        HAVING roleName is not null
     </select>
 
 </mapper>

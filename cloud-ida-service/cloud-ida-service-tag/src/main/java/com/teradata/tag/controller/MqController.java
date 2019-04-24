@@ -17,7 +17,7 @@ import java.util.UUID;
  * @date 2018/7/27 0027 下午 2:45
  */
 
-@RestController
+//@RestController
 public class MqController {
 
     //@Resource

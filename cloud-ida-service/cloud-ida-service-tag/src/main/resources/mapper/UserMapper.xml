@@ -12,7 +12,7 @@
 
     <select id="getUserByUserId" resultMap="sysUser-result" parameterType="java.lang.String">
         SELECT user_id, user_name, user_role_names, user_account, user_password
-	    FROM public.ida_user
+	    FROM ida_user
 	    WHERE user_account=#{userId,jdbcType=VARCHAR}
 
     </select>

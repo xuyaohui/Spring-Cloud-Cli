@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @date 2018/7/27 0027 下午 2:34
  */
 
-@Configuration
+//@Configuration
 public class RabbitConfig {
 
     @Bean

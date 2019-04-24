@@ -16,7 +16,7 @@ import java.util.Date;
  * @date 2018/7/27 0027 下午 2:42
  */
 
-@Component
+//@Component
 public class ReceiverMq {
 
     private static final Logger log = LoggerFactory.getLogger(ReceiverMq.class);

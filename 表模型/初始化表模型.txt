@@ -1,5 +1,4 @@
 ﻿
---权限表
 DROP TABLE IF EXISTS ida_permission;
 create table ida_permission(
     permission_id serial PRIMARY KEY,
@@ -10,14 +9,12 @@ create table ida_permission(
     permission_auth varchar(255)
 );
 
---角色表
 DROP TABLE IF EXISTS ida_role;
 CREATE TABLE ida_role (
   role_id serial PRIMARY KEY,
   role_name varchar(255) 
 );
 
---角色权限
 DROP TABLE IF EXISTS ida_role_permission;
 CREATE TABLE ida_role_permission (
   id serial PRIMARY KEY,
@@ -25,7 +22,6 @@ CREATE TABLE ida_role_permission (
   permission_id integer
 );
 
---用户表
 DROP TABLE IF EXISTS ida_user;
 CREATE TABLE ida_user (
   user_id serial PRIMARY KEY,
@@ -35,7 +31,6 @@ CREATE TABLE ida_user (
   user_password varchar(255)
 );
 
---用户角色表
 DROP TABLE IF EXISTS ida_user_role;
 CREATE TABLE ida_user_role (
   id serial PRIMARY KEY,
