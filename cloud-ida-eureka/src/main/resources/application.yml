@@ -1,0 +1,50 @@
+server:
+  port: 8900
+
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    active: test_ha_1
+
+management:
+  security:
+    enabled: false
+  health:
+    rabbit:
+      enabled: false
+
+---
+spring:
+  profiles: dev
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
+    register-with-eureka: true
+    fetch-registry: false
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+
+---
+spring:
+  profiles: test_ha_1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eurekaserver2:${server.port}/eureka/
+  instance:
+    hostname: eurekaserver1
+---
+spring:
+  profiles: test_ha_2
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eurekaserver1:${server.port}/eureka/
+  instance:
+    hostname: eurekaserver2

@@ -6,7 +6,7 @@
 	<groupId>com.teradata</groupId>
 	<artifactId>cloud-ida-eureka</artifactId>
 	<version>1.0.0</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>cloud-ida-eureka</name>
 	<description>Demo project for Spring Boot</description>
