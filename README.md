@@ -1,6 +1,8 @@
 SpringCloud 脚手架
 ===
 
+架构升级，基于spring cloud alibaba版实现 链接：https://github.com/xuyaohui/cloud_scaffold_code/tree/master
+
 简易教程
 ---
 https://blog.csdn.net/u014271612/article/details/82866913
